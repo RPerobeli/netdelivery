@@ -1,5 +1,20 @@
-version: "2"
+
 services:
+  mysql:
+    image: mysql:8.0
+    cap_add:
+      - SYS_NICE
+    environment:
+      - MYSQL_DATABASE=net_delivery
+      - MYSQL_USER=net_delivery
+      - MYSQL_PASSWORD=mauFJcuf5dhRMQrjj
+      - MYSQL_ROOT_HOST='172.19.0.1'
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
   zookeeper:
     image: confluentinc/cp-zookeeper:6.2.0
     hostname: zookeeper
@@ -41,3 +56,6 @@ services:
       KAFKA_BROKERCONNECT: "kafka:29092"
     depends_on:
       - "kafka"
+volumes:
+    mysql:
+        driver: local
