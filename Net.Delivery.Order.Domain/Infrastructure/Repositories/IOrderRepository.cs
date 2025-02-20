@@ -1,4 +1,4 @@
-﻿using Net.Delivery.Order.Domain.Entities;
+﻿using Net.Delivery.Order.Domain.Model;
 using System.Collections.Generic;
 
 namespace Net.Delivery.Order.Domain.Infrastructure.Repositories

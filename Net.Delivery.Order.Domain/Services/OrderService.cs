@@ -6,6 +6,7 @@ using Net.Delivery.Order.Domain.Infrastructure.Repositories;
 using Net.Delivery.Order.Domain.Entities;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Net.Delivery.Order.Domain.Model;
 
 namespace Net.Delivery.Order.Domain.Services
 {
@@ -38,8 +39,9 @@ namespace Net.Delivery.Order.Domain.Services
         /// </summary>
         /// <param name="items">Order items</param>
         /// <param name="customer">Order customer</param>
-        public async Task CreateOrder(IList<string> items, Customer customer)
+        public async Task CreateOrder(IList<long> items, Customer customer)
         {
+            var cs = _configuration.GetConnectionString("DefaultConnection");
             Entities.Order order = new Entities.Order(items, customer);
 
             _orderRepository.Add(order);

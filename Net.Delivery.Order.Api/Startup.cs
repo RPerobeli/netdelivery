@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Net.Delivery.Order.Domain.Infrastructure;
 using Net.Delivery.Order.Domain.Infrastructure.Repositories;
 using Net.Delivery.Order.Domain.Services;
 using System;
@@ -14,6 +17,13 @@ namespace Net.Delivery.Order.Api
     /// </summary>
     public class Startup
     {
+
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration config)
+        {
+            Configuration = config;
+        }
 
         /// <summary>
         /// Configures the services to be used
@@ -33,6 +43,11 @@ namespace Net.Delivery.Order.Api
 
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderService, OrderService>();
+            //services.AddDbContext<NetDeliveryContext>(options =>
+            //{
+            //    var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            //    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            //});
         }
 
         /// <summary>

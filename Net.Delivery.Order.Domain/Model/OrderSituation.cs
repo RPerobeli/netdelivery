@@ -1,4 +1,4 @@
-﻿namespace Net.Delivery.Order.Domain.Entities
+﻿namespace Net.Delivery.Order.Domain.Model
 {
     /// <summary>
     /// Possible order situations
@@ -12,6 +12,11 @@
         /// <summary>
         /// Order delivered
         /// </summary>
-        DELIVERED
+        DELIVERED,
+
+        /// <summary>
+        /// Order canceled
+        /// </summary>
+        CANCELED
     }
 }

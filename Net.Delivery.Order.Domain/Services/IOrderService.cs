@@ -1,4 +1,5 @@
 ﻿using Net.Delivery.Order.Domain.Entities;
+using Net.Delivery.Order.Domain.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace Net.Delivery.Order.Domain.Services
         /// </summary>
         /// <param name="items">Order items</param>
         /// <param name="customer">Order customer</param>
-        Task CreateOrder(IList<string> items, Customer customer);
+        Task CreateOrder(IList<long> items, Customer customer);
 
         /// <summary>
         /// Updates an order

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Net.Delivery.Order.Domain.Entities;
+using Net.Delivery.Order.Domain.Model;
 using Net.Delivery.Order.Domain.Services;
 using System.Collections.Generic;
 
@@ -31,7 +32,7 @@ namespace Net.Delivery.Order.Api.Controllers
         /// <param name="items">Order items</param>
         /// <param name="customer">Order customer</param>
         [HttpPost("create-order")]
-        public async void CreateOrder([FromForm] IList<string> items, [FromForm] Customer customer)
+        public async void CreateOrder([FromForm] IList<long> items, [FromForm] Customer customer)
         {
            await _orderService.CreateOrder(items, customer);
         }

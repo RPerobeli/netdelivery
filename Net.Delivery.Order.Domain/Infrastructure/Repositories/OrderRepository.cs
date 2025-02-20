@@ -1,4 +1,4 @@
-﻿using Net.Delivery.Order.Domain.Entities;
+﻿using Net.Delivery.Order.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

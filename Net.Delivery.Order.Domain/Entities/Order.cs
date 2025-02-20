@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using Net.Delivery.Order.Domain.Model;
 
 namespace Net.Delivery.Order.Domain.Entities
 {
@@ -11,6 +14,7 @@ namespace Net.Delivery.Order.Domain.Entities
         /// <summary>
         /// Order id
         /// </summary>
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string OrderId { get; set; }
 
         /// <summary>
@@ -31,25 +35,33 @@ namespace Net.Delivery.Order.Domain.Entities
         /// <summary>
         /// Order`s items
         /// </summary>
-        public IList<string> Items { get; set; }
+        public IList<long> ItemIdList { get; set; }   
+
 
         /// <summary>
         /// Order`s customer
         /// </summary>
+        
+        public long CustomerId { get; set; }
+
+        //Relacionamentos
         public Customer Customer { get; set; }
+        public ICollection<Item> Items { get; set; } = new List<Item>();
+
+
 
         /// <summary>
         /// Order builder
         /// </summary>
-        /// <param name="items">Order items</param>
+        /// <param name="items">Order items -> list of items id</param>
         /// <param name="customer">Order customer</param>
-        public Order(IList<string> items, Customer customer)
+        public Order(IList<long> items, Customer customer)
         {
             OrderId = Guid.NewGuid().ToString();
             OrderCreateDate = DateTime.Now;
             OrderLastUpdate = OrderCreateDate;
             OrderSituation = OrderSituation.CREATED;
-            Items = items;
+            ItemIdList = items;
             Customer = customer;
         }
 
