@@ -24,9 +24,9 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<bool> Add(Item customer)
+        public async Task<bool> Add(Item item)
         {
-            var retorno = await _context.AddAsync(customer);
+            var retorno = await _context.AddAsync(item);
             if (retorno != null)
                 return true;
             else
@@ -50,9 +50,9 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
             return item;
         }
 
-        public  bool Update(Item customer)
+        public  bool Update(Item item)
         {
-            var retorno = _context.Update(customer);
+            var retorno = _context.Update(item);
             if(retorno != null) return true;
             else return false;
         }
