@@ -1,5 +1,6 @@
 ﻿using Net.Delivery.Order.Domain.Model;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
 {
@@ -8,6 +9,8 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
     /// </summary>
     public interface IOrderRepository
     {
+
+        public void Commit();
         /// <summary>
         /// Add an order into database
         /// </summary>

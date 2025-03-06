@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using Net.Delivery.Order.Domain.Enums;
 
 namespace Net.Delivery.Order.Domain.Entities
 {
@@ -34,6 +35,12 @@ namespace Net.Delivery.Order.Domain.Entities
         /// </summary>
         [Column("EMAIL")]
         public string Email { get; set; }
+
+        /// <summary>
+        /// Customer's type
+        /// </summary>
+        [Column("TIPO_USUARIO")]
+        public EUserType Type { get; set; }
 
 
         // Relacionamentos

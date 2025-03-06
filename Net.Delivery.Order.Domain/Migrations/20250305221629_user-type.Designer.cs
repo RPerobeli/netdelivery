@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Net.Delivery.Order.Domain.Infrastructure;
 
@@ -11,9 +12,11 @@ using Net.Delivery.Order.Domain.Infrastructure;
 namespace Net.Delivery.Order.Domain.Migrations
 {
     [DbContext(typeof(NetDeliveryContext))]
-    partial class NetDeliveryContextModelSnapshot : ModelSnapshot
+    [Migration("20250305221629_user-type")]
+    partial class usertype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

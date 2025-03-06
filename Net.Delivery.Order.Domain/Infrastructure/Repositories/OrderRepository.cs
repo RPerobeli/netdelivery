@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
 {
@@ -10,10 +11,17 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
     /// </summary>
     public class OrderRepository : IOrderRepository
     {
-        /// <summary>
-        /// This is like a memory database
-        /// </summary>
-        private static IList<Entities.Order> _orderDataBase = new List<Entities.Order>();
+        private readonly NetDeliveryContext _context;
+
+        public OrderRepository(NetDeliveryContext context)
+        {
+            _context = context;
+        }
+
+        public void Commit()
+        {
+            _context.SaveChanges();
+        }
 
         /// <summary>
         /// Add an order into database
@@ -21,7 +29,7 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
         /// <param name="order">Order's data</param>
         public void Add(Entities.Order order)
         {
-            _orderDataBase.Add(order);
+            _context.Add(order);
         }
 
         /// <summary>
@@ -30,16 +38,15 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
         /// <returns>All orders</returns>
         public IList<Entities.Order> GetAll()
         {
-            return _orderDataBase.ToList();
+            return _context.Pedidos.ToList();
         }
-
         /// <summary>
         /// Get an order from database by its id
         /// </summary>
         /// <returns>Order related to the id asked</returns>
         public Entities.Order GetOrderById(string OrderId)
         {
-            Entities.Order orderRecovered = _orderDataBase.FirstOrDefault(o => o.OrderId.Equals(OrderId));
+            Entities.Order orderRecovered = _context.Pedidos.FirstOrDefault(o => o.OrderId.Equals(OrderId));
 
             if (orderRecovered == null)
                 throw new Exception("Order not found");
@@ -53,7 +60,7 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
         /// <returns>All orders those have the requested situation</returns>
         public IList<Entities.Order> GetOrdersBySituation(OrderSituation orderSituation)
         {
-            return _orderDataBase.Where(o => o.OrderSituation == orderSituation).ToList();
+            return _context.Pedidos.ToList().Where(o=>o.OrderSituation == orderSituation).ToList();
         }
 
         /// <summary>
@@ -62,9 +69,7 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
         /// <param name="order">Order's data</param>
         public void Update(Entities.Order order)
         {
-            Entities.Order orderRecovered = GetOrderById(order.OrderId);
-
-            orderRecovered.OrderSituation = order.OrderSituation;
+            _context.Update(order);
         }
     }
 }
