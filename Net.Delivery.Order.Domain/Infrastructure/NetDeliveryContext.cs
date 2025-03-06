@@ -15,6 +15,7 @@ namespace Net.Delivery.Order.Domain.Infrastructure
     {
         public DbSet<Customer> Usuarios { get; set; }
         public DbSet<Entities.Order> Pedidos { get; set; }
+        public DbSet<Item> Items { get; set; }
 
         private readonly IConfiguration _configuration;
 
