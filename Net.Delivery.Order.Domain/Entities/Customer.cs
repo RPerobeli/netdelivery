@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using Net.Delivery.Order.Domain.Enums;
+using System.Text.Json.Serialization;
 
 namespace Net.Delivery.Order.Domain.Entities
 {
@@ -15,6 +16,7 @@ namespace Net.Delivery.Order.Domain.Entities
         /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("ID")]
+        [JsonIgnore]
         public long Id { get; set; }
 
 
@@ -44,6 +46,7 @@ namespace Net.Delivery.Order.Domain.Entities
 
 
         // Relacionamentos
+        [JsonIgnore]
         public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

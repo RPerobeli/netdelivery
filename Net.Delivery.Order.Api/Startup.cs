@@ -41,13 +41,16 @@ namespace Net.Delivery.Order.Api
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
+            services.AddDbContext<NetDeliveryContext>(options =>
+            {
+                var connectionString = Configuration.GetConnectionString("DefaultConnection");
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            });
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderService, OrderService>();
-            //services.AddDbContext<NetDeliveryContext>(options =>
-            //{
-            //    var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            //    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-            //});
+            services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
         }
 
         /// <summary>

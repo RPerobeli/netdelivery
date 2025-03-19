@@ -28,6 +28,7 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
         }
         public async Task<bool> Add(Customer customer)
         {
+            //retornar o id ao inves do bool
             var retorno = await _context.AddAsync(customer);
             if (retorno != null)
                 return true;
