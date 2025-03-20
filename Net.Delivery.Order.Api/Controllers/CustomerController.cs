@@ -26,14 +26,14 @@ namespace Net.Delivery.Order.Api.Controllers
         }
 
         /// <summary>
-        /// Creates an order
+        /// Creates a customer
+        /// Customer types: CLIENTE | EMPRESA
         /// </summary>
-        /// <param name="items">Order items</param>
-        /// <param name="customer">Order customer</param>
         [HttpPost("register-customer")]
-        public async Task<IActionResult> CreateCustomer([FromBody] Customer customer)
+        public async Task<ActionResult<bool>> CreateCustomer([FromBody] Customer customer)
         {
             bool retorno = await _userService.Add(customer);
+            return new ActionResult<bool>(retorno);
         }
     }
 }

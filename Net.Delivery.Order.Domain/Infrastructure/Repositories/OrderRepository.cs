@@ -1,4 +1,5 @@
-﻿using Net.Delivery.Order.Domain.Model;
+﻿using Net.Delivery.Order.Domain.Entities;
+using Net.Delivery.Order.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +28,15 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
         /// Add an order into database
         /// </summary>
         /// <param name="order">Order's data</param>
-        public void Add(Entities.Order order)
+        public string Add(Entities.Order order, List<Item> itemList)
         {
-            _context.Add(order);
+            foreach(var item in itemList)
+            {
+                order.OrderItens.Add(new OrderItem() { Item = item });
+            }
+            _context.Pedidos.Add(order);
+            Commit();
+            return order.OrderId;
         }
 
         /// <summary>

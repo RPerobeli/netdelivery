@@ -16,6 +16,7 @@ namespace Net.Delivery.Order.Domain.Infrastructure
         public DbSet<Customer> Usuarios { get; set; }
         public DbSet<Entities.Order> Pedidos { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<OrderItem> PedidoItens { get; set; } // Tabela de junção
 
         private readonly IConfiguration _configuration;
 
@@ -44,16 +45,24 @@ namespace Net.Delivery.Order.Domain.Infrastructure
             modelBuilder.Entity<Item>().Property(o => o.ItemId).ValueGeneratedOnAdd();
             modelBuilder.Entity<Item>().HasKey(c=>c.ItemId);
 
+            modelBuilder.Entity<OrderItem>()
+                        .ToTable("PEDIDO_ITENS") // Nome da tabela de junção
+                        .HasKey(oi => new { oi.OrderId, oi.ItemId }); // Chave composta
+
+            modelBuilder.Entity<OrderItem>()
+                        .HasOne(oi => oi.Order)
+                        .WithMany(o => o.OrderItens)
+                        .HasForeignKey(oi => oi.OrderId);
+
+            modelBuilder.Entity<OrderItem>()
+                        .HasOne(oi => oi.Item)
+                        .WithMany(i => i.OrderItens)
+                        .HasForeignKey(oi => oi.ItemId);
+
             modelBuilder.Entity<Entities.Order>()
                 .HasOne(o => o.Customer)
                 .WithMany(c => c.Orders)
                 .HasForeignKey(o => o.CustomerId)  // Define a FK
-                .OnDelete(DeleteBehavior.Cascade)
-                ;
-
-            modelBuilder.Entity<Entities.Order>()
-                .HasMany(o => o.Items)
-                .WithOne(i => i.Order)
                 .OnDelete(DeleteBehavior.Cascade)
                 ;
 

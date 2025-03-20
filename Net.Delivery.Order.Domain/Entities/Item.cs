@@ -11,12 +11,12 @@ namespace Net.Delivery.Order.Domain.Entities
         public long ItemId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string UnitValue { get; set; }
+        public decimal UnitValue { get; set; }
 
 
 
 
         //Relacionamentos
-        public Order Order { get; set; }
+        public ICollection<OrderItem> OrderItens { get; set; } = new List<OrderItem>();
     }
 }

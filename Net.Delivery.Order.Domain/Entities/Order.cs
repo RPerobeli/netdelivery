@@ -35,13 +35,13 @@ namespace Net.Delivery.Order.Domain.Entities
         /// <summary>
         /// Order`s items
         /// </summary>
-        public IList<long> ItemIdList { get; set; }   
+        public ICollection<OrderItem> OrderItens { get; set; } = new List<OrderItem>();
 
 
         /// <summary>
         /// Order`s customer
         /// </summary>
-        
+
         public long CustomerId { get; set; }
 
         //Relacionamentos
@@ -61,7 +61,6 @@ namespace Net.Delivery.Order.Domain.Entities
             OrderCreateDate = DateTime.Now;
             OrderLastUpdate = OrderCreateDate;
             OrderSituation = OrderSituation.CREATED;
-            ItemIdList = items;
             Customer = customer;
         }
 

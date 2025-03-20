@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Net.Delivery.Order.Domain.Infrastructure;
 
@@ -11,9 +12,11 @@ using Net.Delivery.Order.Domain.Infrastructure;
 namespace Net.Delivery.Order.Domain.Migrations
 {
     [DbContext(typeof(NetDeliveryContext))]
-    partial class NetDeliveryContextModelSnapshot : ModelSnapshot
+    [Migration("20250320224558_Pedidos_itensMigration")]
+    partial class Pedidos_itensMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,8 +72,8 @@ namespace Net.Delivery.Order.Domain.Migrations
                     b.Property<string>("OrderId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<decimal>("UnitValue")
-                        .HasColumnType("decimal(65,30)");
+                    b.Property<string>("UnitValue")
+                        .HasColumnType("longtext");
 
                     b.HasKey("ItemId");
 

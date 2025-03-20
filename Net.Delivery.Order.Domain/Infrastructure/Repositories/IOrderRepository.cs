@@ -15,7 +15,7 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
         /// Add an order into database
         /// </summary>
         /// <param name="order">Order's data</param>
-        void Add(Entities.Order order);
+        string Add(Entities.Order order);
 
         /// <summary>
         /// Update an order to database
