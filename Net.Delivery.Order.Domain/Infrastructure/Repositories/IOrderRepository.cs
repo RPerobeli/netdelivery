@@ -1,4 +1,5 @@
-﻿using Net.Delivery.Order.Domain.Model;
+﻿using Net.Delivery.Order.Domain.Entities;
+using Net.Delivery.Order.Domain.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace Net.Delivery.Order.Domain.Infrastructure.Repositories
         /// Add an order into database
         /// </summary>
         /// <param name="order">Order's data</param>
-        string Add(Entities.Order order);
+        string Add(Entities.Order order, List<Item> itemList);
 
         /// <summary>
         /// Update an order to database
