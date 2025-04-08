@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Net.Delivery.Order.Domain.Entities;
 using Net.Delivery.Order.Domain.Model;
 using Net.Delivery.Order.Domain.Services;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,17 +26,19 @@ namespace Net.Delivery.Order.Api.Controllers
         public OrderController(IOrderService orderService)
         {
             _orderService = orderService;
+
         }
 
         /// <summary>
         /// Creates an order
         /// </summary>
         /// <param name="items">Order items</param>
-        /// <param name="customer">Order customer</param>
-        [HttpPost("create-order")]
-        public async void CreateOrder([FromForm] IList<long> items, [FromForm] Customer customer)
+        /// <param name="customerId">Order customer</param>
+        [HttpPost("create-order/{customerId}")]
+        public async Task<ActionResult<string>> CreateOrder([FromBody] IList<long> items, long customerId)
         {
-           await _orderService.CreateOrder(items, customer);
+            string retorno = await _orderService.CreateOrder(items, customerId);
+            return new ActionResult<string>(retorno);
         }
 
         /// <summary>

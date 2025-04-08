@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Net.Delivery.Order.Domain.Entities;
+using Net.Delivery.Order.Domain.Model.DTOs;
 using Net.Delivery.Order.Domain.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -35,5 +36,18 @@ namespace Net.Delivery.Order.Api.Controllers
             bool retorno = await _userService.Add(customer);
             return new ActionResult<bool>(retorno);
         }
+
+        /// <summary>
+        /// return all customers
+        /// Customer types: CLIENTE | EMPRESA
+        /// </summary>
+        [HttpGet()]
+        public async Task<ActionResult<List<CustomerDTO>>> GetAllCustomers()
+        {
+            List<CustomerDTO> retorno = await _userService.GetAll();
+            return new ActionResult<List<CustomerDTO>>(retorno);
+        }
+
+
     }
 }

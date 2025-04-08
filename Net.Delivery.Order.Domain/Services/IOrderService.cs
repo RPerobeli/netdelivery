@@ -15,7 +15,7 @@ namespace Net.Delivery.Order.Domain.Services
         /// </summary>
         /// <param name="items">Order items</param>
         /// <param name="customer">Order customer</param>
-        Task CreateOrder(IList<long> items, Customer customer);
+        Task<string> CreateOrder(IList<long> items, long customerId);
 
         /// <summary>
         /// Updates an order

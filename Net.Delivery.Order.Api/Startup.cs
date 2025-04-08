@@ -50,6 +50,7 @@ namespace Net.Delivery.Order.Api
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
 
         }
 

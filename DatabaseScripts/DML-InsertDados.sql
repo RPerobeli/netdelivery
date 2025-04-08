@@ -13,4 +13,6 @@ INSERT INTO ITEM (Name, Description, UnitValue) VALUES
 
 
 select * from ITEM;
+select * from USUARIOS;
+
 

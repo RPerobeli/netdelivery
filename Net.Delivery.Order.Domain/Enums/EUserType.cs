@@ -9,7 +9,7 @@ namespace Net.Delivery.Order.Domain.Enums
 {
     public enum EUserType
     {
-        CLIENTE = 'C',
-        EMPRESA = 'E'
+        CLIENTE,
+        EMPRESA
     }
 }

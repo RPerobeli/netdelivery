@@ -1,6 +1,7 @@
 ﻿using Net.Delivery.Order.Domain.Entities;
 using Net.Delivery.Order.Domain.Enums;
 using Net.Delivery.Order.Domain.Infrastructure.Repositories;
+using Net.Delivery.Order.Domain.Model.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Net.Delivery.Order.Domain.Services
     {
         public Task<bool> Add(Customer customer);
         public bool Update(Customer customer);
-        public Task<List<Customer>> GetAll();
+        public Task<List<CustomerDTO>> GetAll();
         public Task<Customer> GetById(int id);
         public Task<List<Customer>> GetByType(EUserType uType);
     }
@@ -32,7 +33,12 @@ namespace Net.Delivery.Order.Domain.Services
             //TODO: ideias -> validar campos baseado no tipo de consumidor, tratar o mapeamento de DTO para Model aqui
             if(customer is not null)
             {
-                return await _userRepository.Add(customer);
+                bool success =  await _userRepository.Add(customer);
+                if(success)
+                {
+                    await _userRepository.Commit();
+                }
+                return success;
             }
             else
             {
@@ -40,9 +46,19 @@ namespace Net.Delivery.Order.Domain.Services
             }
         }
 
-        public async Task<List<Customer>> GetAll()
+        public async Task<List<CustomerDTO>> GetAll()
         {
-            return await _userRepository.GetAll();
+            List<Customer> customers = await _userRepository.GetAll();
+            List<CustomerDTO> customersDtos = new List<CustomerDTO>();
+            foreach (Customer customer in customers)
+            {
+                CustomerDTO customerDTO = new CustomerDTO();
+                customerDTO.CustomerName = customer.Name;
+                customerDTO.CustomerId = customer.Id;
+                customersDtos.Add(customerDTO);
+            }
+            return customersDtos;
+
         }
 
         public async Task<Customer> GetById(int id)
