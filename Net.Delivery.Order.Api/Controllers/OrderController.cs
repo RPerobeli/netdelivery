@@ -32,8 +32,8 @@ namespace Net.Delivery.Order.Api.Controllers
         /// <summary>
         /// Creates an order
         /// </summary>
-        /// <param name="items">Order items</param>
-        /// <param name="customerId">Order customer</param>
+        /// <param name="items">Order items -> must be the ids of the items available.</param>
+        /// <param name="customerId">Order's customer's id -> must be a customer, not a company </param>
         [HttpPost("create-order/{customerId}")]
         public async Task<ActionResult<string>> CreateOrder([FromBody] IList<long> items, long customerId)
         {

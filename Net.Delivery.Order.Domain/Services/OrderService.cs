@@ -48,6 +48,10 @@ namespace Net.Delivery.Order.Domain.Services
             var cs = _configuration.GetConnectionString("DefaultConnection");
 
             Customer customer = await _userRepository.GetById((int)customerId);
+            if(customer.Type == Enums.EUserType.EMPRESA)
+            {
+                throw new InvalidOperationException("The user must be a client");
+            }
 
             Entities.Order order = new Entities.Order(customer);
 

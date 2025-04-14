@@ -1,7 +1,9 @@
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Net.Delivery.Order.Domain.Entities;
 using Net.Delivery.Order.Domain.Services;
 using System;
 using System.Text.Json;
@@ -14,17 +16,19 @@ namespace Net.Delivery.Order.Notifier
     {
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _configuration;
+        private readonly IServiceProvider _serviceProvider;
         private readonly string _orderTopicName;
         private readonly string _kafkaBootstrapServers;
         private readonly string _notifierConsumeGroupName;
 
-        public Worker(ILogger<Worker> logger, IConfiguration configuration)
+        public Worker(ILogger<Worker> logger, IConfiguration configuration, IServiceProvider serviceProvider)
         {
             _logger = logger;
             _configuration = configuration;
             _orderTopicName = _configuration["OrderSettings:OrderTopicName"];
             _kafkaBootstrapServers = _configuration["OrderSettings:KafkaBootstrapServer"];
             _notifierConsumeGroupName = _configuration["OrderSettings:NotifierConsumeGroupName"];
+            _serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -67,7 +71,12 @@ namespace Net.Delivery.Order.Notifier
 
                                 Domain.Entities.Order order = JsonSerializer.Deserialize<Domain.Entities.Order>(consumeResult.Message.Value);
 
-                                notifierService.Notify(order);
+                                using (var scope = _serviceProvider.CreateScope())
+                                {
+                                    var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+                                    Customer customer = await userService.GetById((int)order.CustomerId);
+                                    notifierService.Notify(customer);
+                                }
 
                                 Console.WriteLine($"Mensagem recebida: {consumeResult.Message.Value}");
                             }

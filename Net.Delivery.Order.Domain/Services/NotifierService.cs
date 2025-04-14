@@ -12,9 +12,9 @@ namespace Net.Delivery.Order.Domain.Services
         /// Notifies the customer about some order update
         /// </summary>
         /// <param name="order">Order data</param>
-        public void Notify(Entities.Order order)
+        public void Notify(Customer customer)
         {
-            SendEmail(order.Customer.Email);
+            SendEmail(customer.Email);
         }
 
         /// <summary>
