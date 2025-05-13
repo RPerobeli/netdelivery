@@ -108,6 +108,26 @@ namespace Net.Delivery.Order.Domain.Services
         /// </summary>
         /// <param name="order">Order data</param>
         /// <returns></returns>
+        private async Task<DeliveryResult<string, string>> PublishMessageToTopicWithKey(Entities.Order order)
+        {
+            var config = new ProducerConfig
+            {
+                BootstrapServers = _kafkaBootstrapServers
+            };
+
+            string orderConvertedToJson = JsonSerializer.Serialize(order);
+
+            using (var producer = new ProducerBuilder<string, string>(config).Build())
+            {
+                DeliveryResult<string, string> deliveryReport = await producer.ProduceAsync(_orderTopicName, 
+                    new Message<string, string> {
+                        Value = orderConvertedToJson,
+                        Key = order.OrderId
+                    });
+                return deliveryReport;
+            }
+        }
+
         private async Task<DeliveryResult<Null, string>> PublishMessageToTopic(Entities.Order order)
         {
             var config = new ProducerConfig
@@ -119,7 +139,11 @@ namespace Net.Delivery.Order.Domain.Services
 
             using (var producer = new ProducerBuilder<Null, string>(config).Build())
             {
-                DeliveryResult<Null, string> deliveryReport = await producer.ProduceAsync(_orderTopicName, new Message<Null, string> { Value = orderConvertedToJson });
+                DeliveryResult<Null, string> deliveryReport = await producer.ProduceAsync(_orderTopicName,
+                    new Message<Null, string>
+                    {
+                        Value = orderConvertedToJson
+                    });
                 return deliveryReport;
             }
         }

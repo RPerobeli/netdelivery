@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Net.Delivery.Order.Domain.Entities;
 using Net.Delivery.Order.Domain.Model;
 using Net.Delivery.Order.Domain.Services;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,8 +38,14 @@ namespace Net.Delivery.Order.Api.Controllers
         [HttpPost("create-order/{customerId}")]
         public async Task<ActionResult<string>> CreateOrder([FromBody] IList<long> items, long customerId)
         {
-            string retorno = await _orderService.CreateOrder(items, customerId);
-            return new ActionResult<string>(retorno);
+            try
+            {
+                string retorno = await _orderService.CreateOrder(items, customerId);
+                return new ActionResult<string>(retorno);
+            }catch(Exception ex)
+            {
+                return new ActionResult<string>(ex.Message);
+            }
         }
 
         /// <summary>
@@ -49,7 +56,15 @@ namespace Net.Delivery.Order.Api.Controllers
         [HttpPut("update-order-situation")]
         public async void UpdateOrderSituation([FromForm] string orderId, [FromForm] OrderSituation orderSituation)
         {
-            await _orderService.UpdateOrderSituation(orderId, orderSituation);
+            
+            try
+            {
+                await _orderService.UpdateOrderSituation(orderId, orderSituation);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         /// <summary>

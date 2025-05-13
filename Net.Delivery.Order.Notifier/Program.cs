@@ -22,6 +22,7 @@ namespace Net.Delivery.Order.Notifier
                     var configuration = hostContext.Configuration;
                     services.AddApiServices(configuration);
                     services.AddHostedService<Worker>();
+                    services.AddHostedService<WorkerSMS>();
                 });
     }
 }

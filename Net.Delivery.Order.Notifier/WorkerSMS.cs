@@ -1,4 +1,4 @@
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Net.Delivery.Order.Notifier
 {
-    public class Worker : BackgroundService
+    public class WorkerSMS : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _configuration;
@@ -21,13 +21,13 @@ namespace Net.Delivery.Order.Notifier
         private readonly string _kafkaBootstrapServers;
         private readonly string _notifierConsumeGroupName;
 
-        public Worker(ILogger<Worker> logger, IConfiguration configuration, IServiceProvider serviceProvider)
+        public WorkerSMS(ILogger<Worker> logger, IConfiguration configuration, IServiceProvider serviceProvider)
         {
             _logger = logger;
             _configuration = configuration;
             _orderTopicName = _configuration["OrderSettings:OrderTopicName"];
             _kafkaBootstrapServers = _configuration["OrderSettings:KafkaBootstrapServer"];
-            _notifierConsumeGroupName = _configuration["OrderSettings:NotifierConsumeGroupName"];
+            _notifierConsumeGroupName = _configuration["OrderSettings:SmsNotifierConsumeGroupName"];
             _serviceProvider = serviceProvider;
         }
 
@@ -75,14 +75,14 @@ namespace Net.Delivery.Order.Notifier
                                 {
                                     var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
                                     Customer customer = await userService.GetById((int)order.CustomerId);
-                                    notifierService.Notify(customer);
+                                    notifierService.NotifySMS(customer);
                                 }
 
-                                //Console.WriteLine($"WORKER-EMAIL Mensagem recebida: {consumeResult.Message.Value}");
+                                //Console.WriteLine($"WORKER-SMS Mensagem recebida: {consumeResult.Message.Value}");
                             }
                             catch (ConsumeException e)
                             {
-                                Console.WriteLine($"WORKER-EMAIL Erro ao consumir a mensagem: {e.Error.Reason}");
+                                Console.WriteLine($"WORKER-SMS Erro ao consumir a mensagem: {e.Error.Reason}");
                             }
                         }
                     }
